@@ -4,16 +4,8 @@ export interface BaseEvent {
   type: string;
 }
 
-// Event type registry - we'll add more specific event types here
-export type EventType = 'SAMPLE_EVENT' | string; // Will be expanded based on your requirements
-
-// Sample event interface - this is just a placeholder
-export interface SampleEvent extends BaseEvent {
-  type: 'SAMPLE_EVENT';
-  data: {
-    message: string;
-  };
-}
+// Event type registry - defines all possible event types in the system
+export type EventType = 'SESSION_STARTED' | 'SESSION_ENDED';
 
 // event to start a blocking session
 export interface SessionStarted extends BaseEvent {

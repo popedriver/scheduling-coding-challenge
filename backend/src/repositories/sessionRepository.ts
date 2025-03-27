@@ -38,7 +38,7 @@ export class SessionRepository extends BaseEventRepository {
     });
   }
 
-  // Convenience methods specific to sessions
+  // Helper function to get the active session (if it exists) 
   async getActiveSession(userId: string): Promise<SessionStarted | null> {
     // Get all events for the user
     const userEvents = await this.getEvents({ userId });

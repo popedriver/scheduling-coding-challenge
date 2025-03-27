@@ -27,7 +27,6 @@ const startSession: RequestHandler = (req, res) => {
     sessionId: crypto.randomUUID() // Generate a unique session ID
   };
 
-  // Publish event without awaiting
   eventBus.publish('SESSION_STARTED', event);
   res.json({ sessionId: event.sessionId });
 };
