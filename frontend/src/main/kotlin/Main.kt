@@ -49,8 +49,15 @@ fun App() {
                 onClick = {
                     scope.launch {
                         try {
-                            val response = apiService.startSession("user123", "focus")
-                            sessionId = response.sessionId
+                            if (sessionId == null) {
+                                // Start session
+                                val response = apiService.startSession("user123")
+                                sessionId = response.sessionId
+                            } else {
+                                // End session
+                                apiService.endSession("user123")
+                                sessionId = null
+                            }
                         } catch (e: Exception) {
                             error = e.message
                         }
@@ -61,26 +68,7 @@ fun App() {
                     contentColor = White
                 )
             ) {
-                Text("Start Session")
-            }
-
-            Button(
-                onClick = {
-                    scope.launch {
-                        try {
-                            apiService.endSession("user123")
-                            sessionId = null
-                        } catch (e: Exception) {
-                            error = e.message
-                        }
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ButtonGray,
-                    contentColor = White
-                )
-            ) {
-                Text("End Session")
+                Text(if (sessionId == null) "Start Session" else "End Session")
             }
 
             if (sessionId != null) {

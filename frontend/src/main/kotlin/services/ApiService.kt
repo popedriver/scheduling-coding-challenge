@@ -28,8 +28,8 @@ class ApiService {
         private const val BASE_URL = "http://localhost:3000"
     }
 
-    suspend fun startSession(userId: String, mode: String): StartSessionResponse {
-        val request = StartSessionRequest(userId, mode)
+    suspend fun startSession(userId: String): StartSessionResponse {
+        val request = StartSessionRequest(userId)
         return client.post("$BASE_URL/sessions/start") {
             contentType(ContentType.Application.Json)
             setBody(request)

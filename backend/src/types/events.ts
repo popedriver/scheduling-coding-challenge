@@ -20,7 +20,6 @@ export interface SessionStarted extends BaseEvent {
   type: 'SESSION_STARTED';
   sessionId: string;
   userId: string;
-  mode: string;
 }
 
 // event to end a blocking session

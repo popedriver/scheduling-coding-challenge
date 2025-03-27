@@ -1,6 +1,6 @@
 import { BaseEventHandler } from './baseHandler';
 import { ApplicationEvent, SessionEnded } from '../types/events';
-import { sessionStorage } from '../services/sessionStorage';
+import { sessionRepository } from '../repositories/repository';
 
 export class SessionEndedHandler extends BaseEventHandler {
   constructor() {
@@ -17,15 +17,15 @@ export class SessionEndedHandler extends BaseEventHandler {
     // 2. Verify the session belongs to the user who's ending it
     // 3. Check if the session is already ended    
 
-    // Get the user's active session
-    const activeSession = sessionStorage.getActiveSession(sessionEndedEvent.userId);
+    // Get the user's active session by checking event history
+    const activeSession = await sessionRepository.getActiveSession(sessionEndedEvent.userId);
     if (!activeSession) {
       console.log(`No active session found for user ${sessionEndedEvent.userId}`);
       return;
     }
     
-    // End the session
-    const success = sessionStorage.endSession(activeSession.sessionId);
-    console.log(`Session ${activeSession.sessionId} ended: ${success ? 'success' : 'failed'}`);
+    // Save the session end event
+    await sessionRepository.save(sessionEndedEvent);
+    console.log(`Session ${activeSession.sessionId} ended`);
   }
 } 

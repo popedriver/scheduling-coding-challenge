@@ -13,10 +13,10 @@ app.use(express.json());
 
 // Start a new session
 const startSession: RequestHandler = (req, res) => {
-  const { userId, mode } = req.body;
+  const { userId } = req.body;
   
-  if (!userId || !mode) {
-    res.status(400).json({ error: 'userId and mode are required' });
+  if (!userId) {
+    res.status(400).json({ error: 'userId is required' });
     return;
   }
 
@@ -24,7 +24,6 @@ const startSession: RequestHandler = (req, res) => {
     type: 'SESSION_STARTED',
     timestamp: new Date(),
     userId,
-    mode,
     sessionId: crypto.randomUUID() // Generate a unique session ID
   };
 

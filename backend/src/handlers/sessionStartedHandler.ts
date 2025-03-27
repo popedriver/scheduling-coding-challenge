@@ -1,6 +1,6 @@
 import { BaseEventHandler } from './baseHandler';
 import { ApplicationEvent, SessionStarted } from '../types/events';
-import { sessionStorage } from '../services/sessionStorage';
+import { sessionRepository } from '../repositories/repository';
 
 export class SessionStartedHandler extends BaseEventHandler {
   constructor() {
@@ -12,19 +12,14 @@ export class SessionStartedHandler extends BaseEventHandler {
     
     const sessionStartedEvent = event as SessionStarted;
     
-    // Check if user already has an active session
-    // !!!!! QUESTION: does querying here break event-driven principles?
-    if (sessionStorage.hasActiveSession(sessionStartedEvent.userId)) {
+    // Check if user already has an active session by checking event history
+    const activeSession = await sessionRepository.getActiveSession(sessionStartedEvent.userId);
+    if (activeSession) {
       throw new Error(`User ${sessionStartedEvent.userId} already has an active session`);
     }
 
-    // Validate that a mode was selected
-    if (!sessionStartedEvent.mode) {
-      throw new Error('Mode must be selected when starting a session');
-    }
-
-    // Create the new session
-    const session = sessionStorage.createSession(sessionStartedEvent);
-    console.log(`Created new session: ${session.sessionId} for user: ${session.userId}`);
+    // Save the session start event
+    await sessionRepository.save(sessionStartedEvent);
+    console.log(`Created new session: ${sessionStartedEvent.sessionId} for user: ${sessionStartedEvent.userId}`);
   }
 } 

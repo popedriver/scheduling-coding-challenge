@@ -4,8 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class StartSessionRequest(
-    val userId: String,
-    val mode: String
+    val userId: String
 )
 
 @Serializable

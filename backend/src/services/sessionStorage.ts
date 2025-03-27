@@ -1,9 +1,12 @@
 import { SessionStarted } from '../types/events';
 
+/**
+ * This file implements in-memory storage - it serves as a proxy for what would be a database in a real application.
+ */
+
 interface Session {
   sessionId: string;
   userId: string;
-  mode: string;
   startTime: Date;
   isActive: boolean;
 }
@@ -18,7 +21,6 @@ export class SessionStorage {
     const session: Session = {
       sessionId: event.sessionId,
       userId: event.userId,
-      mode: event.mode,
       startTime: event.timestamp,
       isActive: true
     };
